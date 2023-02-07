@@ -23,6 +23,28 @@ __world_t *world_create(void)
     return __world;
 }
 
+__node_t *node_create(int __type, int __floats, int __used)
+{
+    __node_t *__node = calloc(1, sizeof(__node_t));
+
+    __node->__type   = __type;
+    __node->__floats = __floats;
+    __node->__used   = __used;
+
+    return __node;
+}
+
+__node_t node_cache(int __type, int __floats, int __used)
+{
+    __node_t __node;
+
+    __node.__type   = __type;
+    __node.__floats = __floats;
+    __node.__used   = __used;
+
+    return __node;
+}
+
 __node_t *world_find_node(__world_t *__world, __position_t *__position)
 {
     if (!__position)
@@ -148,4 +170,14 @@ void world_move_node(__world_t *__world, __position_t *__position_src, __positio
     }
 
     __world->__base[__position_dst->__x][__position_dst->__y][__position_dst->__z] = __world->__base[__position_src->__x][__position_src->__y][__position_src->__z];
+}
+
+void world_set_node(__world_t *__world, __position_t *__position, __node_t __node)
+{
+    if (!__world || !__position)
+    {
+        return;
+    }
+
+    __world->__base[__position->__x][__position->__y][__position->__z] = __node;
 }

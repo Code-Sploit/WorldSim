@@ -1,5 +1,7 @@
 #include <world/logic.h>
 
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 
 int logic_is_block_valid(__world_t *__world, __position_t *__position)
@@ -28,8 +30,12 @@ int logic_is_block_valid(__world_t *__world, __position_t *__position)
     /*
     * If the node cannot float then get the node beneath it
     */
+   
+    __position_t *__oposition = calloc(1, sizeof(__position_t));
+    __position_t *__bposition = calloc(1, sizeof(__position_t));
 
-    __position_t *__bposition = __position;
+    memcpy(__oposition, __position, sizeof(__position_t));
+    memcpy(__bposition, __position, sizeof(__position_t));
 
     __bposition->__y = (__bposition->__y - 1);
 
@@ -41,7 +47,7 @@ int logic_is_block_valid(__world_t *__world, __position_t *__position)
 
     if (__bnode->__used == WORLD_NODE_UNUSED)
     {
-        printf("WORLD: Invalid block position of block: [%d\t%d\t%d]!\n");
+        printf("WORLD: Invalid block position of block: [%d : %d : %d]!\n", __oposition->__x, __oposition->__y, __oposition->__z);
 
         return LOGIC_INVALID;
     }
